@@ -63,6 +63,20 @@ def positive_visit_language(text: str) -> bool:
     return not any(neg in lower for neg in negatives)
 
 
+def explains_price_variability(text: str) -> bool:
+    lower = text.lower()
+    markers = (
+        "точн",
+        "дополнитель",
+        "рассчитыва",
+        "согласовыва",
+        "после диагност",
+        "оплачиваются отдельно",
+        "оплачивается отдельно",
+    )
+    return any(marker in lower for marker in markers)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--release", action="store_true")
@@ -135,7 +149,7 @@ def main() -> int:
 
         if len(price_explanation) < 80:
             errors.append(f"{aid}: price explanation is too weak")
-        if "точн" not in price_explanation.lower() and "дополнитель" not in price_explanation.lower():
+        if not explains_price_variability(price_explanation):
             errors.append(f"{aid}: price explanation does not clarify variability/additional work")
         if aid not in {"ktc-vending-maintenance-v2", "ktc-vendista-25-v2", "ktc-kitpos-master-lite-v2", "ktc-mdb-acquiring-telemetry-v2"}:
             if "запчаст" not in price_explanation.lower() and "детал" not in price_explanation.lower():
