@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Static red-team quality gate for Avito Production v2.
+"""Static red-team quality gate for Avito Production v3.
 
-Audit mode validates business rules, copy structure, price transparency, tiering and
-visual briefs. Release mode additionally requires final image verification and
-ready_to_publish=true. No Avito API call is made here.
+Audit mode validates business rules, copy density, price transparency, weak-phrase
+patterns, tiering and visual briefs. Release mode additionally requires final image
+verification and ready_to_publish=true. No Avito API call is made here.
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "avito" / "production_manifest_v2.json"
+MANIFEST = ROOT / "avito" / "production_manifest_v3.json"
 
 FORBIDDEN_CLAIMS = (
     "24/7",
@@ -25,6 +25,16 @@ FORBIDDEN_CLAIMS = (
     "ремонт за 1 день",
     "№1",
     "лучший сервис",
+)
+
+WEAK_PHRASES = (
+    "не работает домашняя кофемашина?",
+    "не работает кофемашина?",
+    "около 4 лет",
+    "работает заметно не так, как раньше",
+    "работает не так, как раньше",
+    "чтобы не тратить время на лишние звонки",
+    "чтобы не тратить время на звонки",
 )
 
 EXPECTED_PRICES = {
@@ -57,7 +67,7 @@ def positive_visit_language(text: str) -> bool:
         return False
     negatives = (
         "выезд на домашние кофемашины не выполняем",
-        "выезд для этого направления в объявлении не заявляем",
+        "выезд для этого направления не заявляем",
         "без выезда",
     )
     return not any(neg in lower for neg in negatives)
@@ -75,6 +85,8 @@ def explains_price_variability(text: str) -> bool:
         "оплачивается отдельно",
         "запчасти отдельно",
         "детали отдельно",
+        "расходные материалы",
+        "заменяемые компоненты",
     )
     return any(marker in lower for marker in markers)
 
@@ -93,6 +105,9 @@ def main() -> int:
     seen_ids: set[str] = set()
     seen_primary_titles: set[str] = set()
     tier_by_id: dict[str, str] = {}
+
+    if data.get("source_of_truth", {}).get("profile_experience") != "4 года работы с кофейным оборудованием":
+        errors.append("source_of_truth: experience must be exact confirmed wording '4 года работы с кофейным оборудованием'")
 
     for ad in ads:
         aid = str(ad.get("id", "")).strip()
@@ -137,6 +152,12 @@ def main() -> int:
         for claim in FORBIDDEN_CLAIMS:
             if claim in combined:
                 errors.append(f"{aid}: forbidden/unverified claim '{claim}'")
+        for phrase in WEAK_PHRASES:
+            if phrase in combined:
+                errors.append(f"{aid}: weak/red-team-blocked phrase '{phrase}'")
+
+        if "4 года" not in desc and tier != "test_only":
+            errors.append(f"{aid}: core/secondary copy must surface confirmed 4-year experience")
 
         if field_scope == "none" and positive_visit_language(f"{title} {desc}"):
             errors.append(f"{aid}: positive visit language conflicts with field_service_scope=none")
@@ -153,18 +174,41 @@ def main() -> int:
             errors.append(f"{aid}: price explanation is too weak")
         if not explains_price_variability(f"{price_explanation} {desc}"):
             errors.append(f"{aid}: listing copy does not clarify price variability/additional work")
-        if aid not in {"ktc-vending-maintenance-v2", "ktc-vendista-25-v2", "ktc-kitpos-master-lite-v2", "ktc-mdb-acquiring-telemetry-v2"}:
-            if "запчаст" not in price_explanation.lower() and "детал" not in price_explanation.lower():
-                errors.append(f"{aid}: repair price explanation must clarify parts/details")
+
+        repair_ids = {
+            "ktc-home-repair-orenburg-v2",
+            "ktc-professional-repair-orenburg-v2",
+            "ktc-jetinno-jl22-jl24-v2",
+            "ktc-vending-repair-orenburg-v2",
+            "ktc-european-vending-repair-v2",
+            "ktc-snack-vending-repair-v2",
+        }
+        if aid in repair_ids:
+            p = price_explanation.lower()
+            if not ("работ" in p and ("запчаст" in p or "детал" in p)):
+                errors.append(f"{aid}: repair pricing must explicitly separate work from parts/details")
+
+        if aid == "ktc-home-repair-orenburg-v2":
+            lower_desc = desc.lower()
+            if "приём оборудования: оренбург, ул. 9 января, д. 58" not in lower_desc:
+                errors.append(f"{aid}: physical service address must be surfaced near the top")
+            if "до приёмки уточним стоимость диагностики для вашей модели" not in lower_desc:
+                errors.append(f"{aid}: diagnostic 'from 700' must be de-risked before intake")
+            if "подскажем, нужно ли привозить кофемашину" not in lower_desc:
+                errors.append(f"{aid}: CTA must reward user with a concrete next-step answer")
 
         if len(proofs) < 3:
             errors.append(f"{aid}: fewer than 3 proof points")
         if not visual.get("first_frame"):
             errors.append(f"{aid}: missing first-frame visual brief")
-        if len(visual.get("overlay") or []) < 1:
-            errors.append(f"{aid}: missing visual overlay")
+        if len(visual.get("overlay_primary") or []) < 1:
+            errors.append(f"{aid}: missing primary visual overlay")
+        if len(visual.get("overlay_test_sequential") or []) < 1:
+            errors.append(f"{aid}: missing sequential visual-overlay test")
         if len(visual.get("gallery") or []) < 3:
             errors.append(f"{aid}: gallery brief is incomplete")
+        if "узнаваем" not in str(visual.get("first_frame", "")).lower() and aid in repair_ids:
+            errors.append(f"{aid}: first frame should keep equipment recognizable")
 
         published_models = [title, alt_title, desc] + [str(x) for x in (ad.get("models") or [])]
         if any("JL25" in value for value in published_models):
