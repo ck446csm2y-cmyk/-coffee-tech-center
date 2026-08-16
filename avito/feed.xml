@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ads formatVersion="3">
+  <Ad>
+    <Id>ktc-coffee-repair-orenburg-001</Id>
+    <ListingFee>Package</ListingFee>
+    <AdStatus>Free</AdStatus>
+    <Category>Предложение услуг</Category>
+    <ServiceType>Ремонт и обслуживание техники</ServiceType>
+    <ServiceSubtype>Кофемашины</ServiceSubtype>
+    <Title>Ремонт кофемашин в Оренбурге | Выезд мастера</Title>
+    <Description><![CDATA[Кофе Тех Центр — ремонт и обслуживание бытовых, профессиональных и вендинговых кофемашин в Оренбурге.
+
+Диагностируем и устраняем неисправности: кофемашина не наливает воду или кофе, не греет, течёт, не мелет зерно, выдаёт ошибку, плохо работает заварочный узел, помпа, клапаны или датчики.
+
+Выполняем чистку гидросистемы, декальцинацию, техническое обслуживание и настройку после ремонта. Работаем с Saeco, Philips, DeLonghi, Jura, Nivona, Dr.Coffee, Jetinno, Franke и другими марками.
+
+Можно согласовать выезд по Оренбургу. Стоимость ремонта согласовываем до начала работ. На выполненные работы предоставляется гарантия.
+
+Напишите в сообщениях Авито марку, модель и что произошло — предварительно сориентируем по диагностике и дальнейшим действиям.]]></Description>
+    <Price>1490</Price>
+    <Address>Оренбург</Address>
+    <ContactMethod>По телефону и в сообщениях</ContactMethod>
+    <WorkExperience>4 года</WorkExperience>
+    <Guarantee>Есть</Guarantee>
+    <Images>
+      <Image url="https://raw.githubusercontent.com/ck446csm2y-cmyk/-coffee-tech-center/main/public_html/assets/kofe-tech-center-logo-v2.png" />
+    </Images>
+  </Ad>
+</Ads>
