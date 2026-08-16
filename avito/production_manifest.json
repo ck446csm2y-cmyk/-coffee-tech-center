@@ -1,0 +1,138 @@
+{
+  "project": "Кофе Тех Центр — Avito Production",
+  "version": "1.0",
+  "source_of_truth": {
+    "prices": "https://kofetehcentr.ru/#prices",
+    "geography": "Оренбург и Оренбургская область",
+    "service_center_city": "Оренбург",
+    "field_service_rule": "Выезд разрешён только для вендингового оборудования",
+    "image_rule": "Только реальные фотографии конкретных моделей/оборудования. AI-генерация оборудования запрещена. Допустима генерация только фона, плашек и типографики вокруг реального фото."
+  },
+  "price_rules": {
+    "diagnostics_workshop_from": 700,
+    "home_repair_from": 1200,
+    "cleaning_service_from": 2500,
+    "professional_repair_from": 2500,
+    "vending_repair_from": 2500,
+    "vending_maintenance_from": 3000,
+    "acquiring_telemetry_from": 2500,
+    "vending_field_visit_orenburg_from": 1000,
+    "parts": "по запросу"
+  },
+  "ads": [
+    {
+      "id": "ktc-home-repair-orenburg",
+      "title": "Ремонт домашних кофемашин в Оренбурге",
+      "portfolio": "HOME_REPAIR",
+      "price_from": 1200,
+      "field_service": false,
+      "place": ["В мастерской"],
+      "brands": ["Saeco", "Philips", "DeLonghi", "Jura", "Nivona"],
+      "image_policy": "real_only",
+      "image_requirements": "Реальные фотографии ремонтируемых домашних кофемашин или собственные сервисные фото; без AI-моделей",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-professional-repair-orenburg",
+      "title": "Ремонт профессиональных кофемашин в Оренбурге",
+      "portfolio": "B2B_SERVICE",
+      "price_from": 2500,
+      "field_service": false,
+      "place": ["В мастерской"],
+      "brands": ["Franke", "Dr.Coffee", "Saeco"],
+      "image_policy": "real_only",
+      "image_requirements": "Реальное профессиональное оборудование конкретной марки/модели или собственные фото сервиса",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-vending-repair-orenburg",
+      "title": "Ремонт вендинговых кофейных автоматов | Выезд",
+      "portfolio": "VENDING_SERVICE",
+      "price_from": 2500,
+      "field_service": true,
+      "field_visit_from": 1000,
+      "place": ["У клиента", "В мастерской"],
+      "image_policy": "real_only",
+      "image_requirements": "Только реальные вендинговые автоматы, которые обслуживаем",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-jetinno-vending-repair",
+      "title": "Ремонт Jetinno JL22 / JL24 / JL25",
+      "portfolio": "VENDING_SERVICE",
+      "price_from": 2500,
+      "field_service": true,
+      "field_visit_from": 1000,
+      "models": ["Jetinno JL22", "Jetinno JL24", "Jetinno JL25"],
+      "image_policy": "exact_model_real_only",
+      "image_requirements": "Если в объявлении названа JL22/JL24/JL25 — на фото должна быть именно соответствующая реальная модель; нельзя подменять модели",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-european-vending-repair",
+      "title": "Ремонт Necta, Unicum, Bianchi, Rheavendors",
+      "portfolio": "VENDING_SERVICE",
+      "price_from": 2500,
+      "field_service": true,
+      "field_visit_from": 1000,
+      "brands": ["Necta", "Unicum", "Bianchi", "Rheavendors"],
+      "image_policy": "real_only",
+      "image_requirements": "Реальные автоматы указанных брендов; предпочтительно собственные фото выполненных работ",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-snack-vending-repair",
+      "title": "Ремонт снековых автоматов | Выезд",
+      "portfolio": "VENDING_SERVICE",
+      "price_from": 2500,
+      "field_service": true,
+      "field_visit_from": 1000,
+      "image_policy": "real_only",
+      "image_requirements": "Реальные снековые автоматы; без вымышленных брендов и панелей управления",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-vending-maintenance",
+      "title": "ТО вендинговых кофейных автоматов",
+      "portfolio": "VENDING_SERVICE",
+      "price_from": 3000,
+      "field_service": true,
+      "field_visit_from": 1000,
+      "image_policy": "real_service_photo_only",
+      "image_requirements": "Фото реального процесса ТО, узлов или обслуживаемого автомата",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-vendista-25",
+      "title": "Настройка Vendista v2.5 для вендинга",
+      "portfolio": "INTEGRATION",
+      "price_from": 2500,
+      "field_service": false,
+      "models": ["Vendista v2.5"],
+      "image_policy": "exact_model_real_only",
+      "image_requirements": "Только настоящий терминал Vendista v2.5; без AI-отрисовки и без подмены другими терминалами",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-kitpos-master-lite",
+      "title": "Настройка KitPos Master / KitPos Lite",
+      "portfolio": "INTEGRATION",
+      "price_from": 2500,
+      "field_service": false,
+      "models": ["KitPos Master", "KitPos Lite"],
+      "image_policy": "exact_model_real_only",
+      "image_requirements": "Использовать реальные фото KitPos Master и KitPos Lite, не смешивать их между собой",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    },
+    {
+      "id": "ktc-mdb-acquiring-telemetry",
+      "title": "Настройка MDB, эквайринга и телеметрии",
+      "portfolio": "INTEGRATION",
+      "price_from": 2500,
+      "field_service": false,
+      "image_policy": "real_only",
+      "image_requirements": "Реальные платы, терминалы, кабели и оборудование, с которыми выполняется настройка; без AI-электроники",
+      "status": "READY_TEXT_IMAGE_REQUIRED"
+    }
+  ]
+}
