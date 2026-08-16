@@ -27,7 +27,10 @@ def main() -> int:
 
     client_id = os.environ["AVITO_CLIENT_ID"].strip()
     client_secret = os.environ["AVITO_CLIENT_SECRET"].strip()
-    user_id = os.environ["AVITO_USER_ID"].strip()
+    raw_user_id = os.environ["AVITO_USER_ID"].strip()
+    # Avito shows profile numbers grouped with spaces (for example, 165 818 622).
+    # Accept that copied display format while keeping strict numeric validation.
+    user_id = "".join(raw_user_id.split())
 
     if not user_id.isdigit():
         fail("AVITO_USER_ID must contain digits only")
