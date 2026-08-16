@@ -77,8 +77,10 @@ def main() -> int:
 
         if field_scope not in ("none", "vending_only"):
             errors.append(f"{aid}: invalid field_service_scope={field_scope!r}")
-        if field_scope == "none" and ("выезд" in title.lower() or "выезд" in desc.lower() and "не выполняем" not in desc.lower() and "не заявляем" not in desc.lower()):
-            errors.append(f"{aid}: field-service language conflicts with field_service_scope=none")
+        if field_scope == "none":
+            desc_has_positive_visit = "выезд" in desc.lower() and "не выполняем" not in desc.lower() and "не заявляем" not in desc.lower()
+            if "выезд" in title.lower() or desc_has_positive_visit:
+                errors.append(f"{aid}: field-service language conflicts with field_service_scope=none")
         if field_scope == "vending_only" and portfolio not in ("VENDING_SERVICE", "INTEGRATION"):
             errors.append(f"{aid}: vending-only field service outside vending/integration portfolio")
 
@@ -93,7 +95,8 @@ def main() -> int:
         elif portfolio == "INTEGRATION" and price != prices["acquiring_telemetry_from"]:
             errors.append(f"{aid}: integration price {price} != source-of-truth {prices['acquiring_telemetry_from']}")
 
-        if "JL25" in title or "JL25" in desc or "JL25" in json.dumps(ad, ensure_ascii=False):
+        published_model_fields = [title, desc] + [str(x) for x in (ad.get("models") or [])]
+        if any("JL25" in value for value in published_model_fields):
             errors.append(f"{aid}: JL25 is blocked pending primary-source/model verification")
 
         image_policy = ad.get("image_policy", "")
