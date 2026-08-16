@@ -2,6 +2,12 @@ name: Avito API read-only check
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/avito-readonly-check.yml
+      - scripts/avito_readonly_probe.py
   pull_request:
     paths:
       - .github/workflows/avito-readonly-check.yml
