@@ -12,8 +12,7 @@
     "composition": 10,
     "text_readability": 5,
     "photo_quality": 5,
-    "portfolio_distinctiveness": 5,
-    "total": 100
+    "portfolio_distinctiveness": 5
   },
   "thresholds": {
     "0_69": "DO_NOT_USE",
