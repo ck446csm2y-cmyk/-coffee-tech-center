@@ -6,13 +6,13 @@ on:
     branches:
       - main
     paths:
-      - avito/production_manifest.json
+      - avito/production_manifest_v3.json
       - avito/agents_policy.json
       - scripts/avito_quality_gate.py
       - .github/workflows/avito-quality-gate.yml
   pull_request:
     paths:
-      - avito/production_manifest.json
+      - avito/production_manifest_v3.json
       - avito/agents_policy.json
       - scripts/avito_quality_gate.py
       - .github/workflows/avito-quality-gate.yml
