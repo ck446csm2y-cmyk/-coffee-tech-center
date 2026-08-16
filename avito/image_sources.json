@@ -1,0 +1,187 @@
+{
+  "version": "1.0",
+  "policy": {
+    "priority": [
+      "own_photo",
+      "official_manufacturer_media",
+      "explicit_open_license",
+      "public_reference_only"
+    ],
+    "hard_rule": "Никаких AI-изображений оборудования. Фото должно показывать реальный аппарат/терминал/узел. Для названной модели требуется точное соответствие модели.",
+    "copyright_rule": "Публичная доступность изображения не означает свободную лицензию. Источники с неясными правами используются для сверки модели; в production предпочтение собственным фото, официальным рекламным материалам с разрешением на использование или изображениям с явной открытой лицензией."
+  },
+  "sources": [
+    {
+      "id": "commons-espresso-repair-shop",
+      "use_for": ["ktc-home-repair-orenburg", "ktc-professional-repair-orenburg"],
+      "source_type": "open_license",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Espresso_machine_repair_shop.png",
+      "asset_url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Espresso_machine_repair_shop.png",
+      "license": "CC BY-SA 4.0",
+      "attribution": "Stussll / Wikimedia Commons, CC BY-SA 4.0",
+      "commercial_reuse": true,
+      "modification": "allowed_with_share_alike_and_attribution",
+      "status": "APPROVED_OPEN_LICENSE"
+    },
+    {
+      "id": "commons-espresso-machine-pro",
+      "use_for": ["ktc-professional-repair-orenburg"],
+      "source_type": "open_license",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Espresso_machine.jpg",
+      "asset_url": "https://upload.wikimedia.org/wikipedia/commons/7/78/Espresso_machine.jpg",
+      "license": "CC BY 2.0",
+      "attribution": "journeys / Wikimedia Commons, CC BY 2.0",
+      "commercial_reuse": true,
+      "modification": "allowed_with_attribution",
+      "status": "APPROVED_OPEN_LICENSE"
+    },
+    {
+      "id": "commons-coffee-vending-cc0-2026",
+      "use_for": ["ktc-vending-repair-orenburg", "ktc-vending-maintenance"],
+      "source_type": "open_license",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Coffee_vending_machine_20260411_175636.jpg",
+      "license": "CC0 1.0",
+      "attribution": "not required; source author Vauia Rex",
+      "commercial_reuse": true,
+      "modification": "allowed",
+      "status": "APPROVED_OPEN_LICENSE"
+    },
+    {
+      "id": "commons-vending-mechanisms",
+      "use_for": ["ktc-vending-maintenance", "ktc-mdb-acquiring-telemetry"],
+      "source_type": "open_license",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Mechanisms_inside_a_coffee_vending_machine.jpg",
+      "license": "CC BY 2.0",
+      "attribution": "author credited on Wikimedia Commons / CC BY 2.0",
+      "commercial_reuse": true,
+      "modification": "allowed_with_attribution",
+      "status": "APPROVED_OPEN_LICENSE"
+    },
+    {
+      "id": "commons-snack-vending-cc0",
+      "use_for": ["ktc-snack-vending-repair"],
+      "source_type": "open_license",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Snack_vending_machine_in_Haikou_-_03.jpg",
+      "license": "CC0 1.0",
+      "attribution": "not required; source author Anna Frodesiak",
+      "commercial_reuse": true,
+      "modification": "allowed",
+      "status": "APPROVED_OPEN_LICENSE"
+    },
+    {
+      "id": "jetinno-jl22-official",
+      "use_for": ["ktc-jetinno-vending-repair"],
+      "model": "Jetinno JL22",
+      "source_type": "official_manufacturer_reference",
+      "source_page": "https://model.jetinno.com/?pid=649&salt=049092&tid=710",
+      "secondary_official_source": "https://shop.jetinno.com/?s=user%2Freginfo.html",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "MODEL_VERIFIED_ASSET_RIGHTS_REVIEW"
+    },
+    {
+      "id": "jetinno-jl24-official",
+      "use_for": ["ktc-jetinno-vending-repair"],
+      "model": "Jetinno JL24",
+      "source_type": "official_manufacturer_reference",
+      "source_page": "https://shop.jetinno.com/?s=user%2Freginfo.html",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "MODEL_VERIFIED_ASSET_RIGHTS_REVIEW"
+    },
+    {
+      "id": "vendista-v25-official",
+      "use_for": ["ktc-vendista-25", "ktc-mdb-acquiring-telemetry"],
+      "model": "Vendista v2.5",
+      "source_type": "official_manufacturer_product_page",
+      "source_page": "https://vendista.ru/solutions/vendista-v-2-5/",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "MODEL_VERIFIED_ASSET_RIGHTS_REVIEW"
+    },
+    {
+      "id": "kitpos-lite-official",
+      "use_for": ["ktc-kitpos-master-lite", "ktc-mdb-acquiring-telemetry"],
+      "model": "KitPos Lite",
+      "source_type": "official_manufacturer_product_page",
+      "source_page": "https://vending.kit-invest.ru/KitPosLite",
+      "marketing_materials": "https://vending.kit-invest.ru/downloads-center",
+      "commercial_reuse": "official_marketing_material_available; exact reuse terms not stated",
+      "status": "MODEL_VERIFIED_OFFICIAL_MARKETING_ASSET"
+    },
+    {
+      "id": "kitpos-master-official",
+      "use_for": ["ktc-kitpos-master-lite", "ktc-mdb-acquiring-telemetry"],
+      "model": "KitPos Master",
+      "source_type": "official_manufacturer_product_page",
+      "source_page": "https://vending.kit-invest.ru/KitPosMaster",
+      "marketing_materials": "https://vending.kit-invest.ru/downloads-center",
+      "commercial_reuse": "official_presentation_and_leaflet_available; exact reuse terms not stated",
+      "status": "MODEL_VERIFIED_OFFICIAL_MARKETING_ASSET"
+    },
+    {
+      "id": "drcoffee-official",
+      "use_for": ["ktc-professional-repair-orenburg"],
+      "source_type": "official_manufacturer_media",
+      "source_page": "https://www.dr-coffee.com/service4-11-4.html",
+      "example_verified_model": "F11",
+      "example_model_page": "https://www.dr-coffee.com/products_detail2-13-43.html",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "OFFICIAL_MEDIA_REFERENCE"
+    },
+    {
+      "id": "necta-official",
+      "use_for": ["ktc-european-vending-repair", "ktc-vending-repair-orenburg"],
+      "source_type": "official_manufacturer_download",
+      "source_page": "https://necta.evocagroup.com/en/products/coffee-vending-machines/barista-1000-touch",
+      "example_verified_model": "Barista 1000 Touch",
+      "rights_note": "Evoca states product/location images may be downloaded and used to promote sale of the product itself and may not be altered without prior authorization; repair-service use is not explicitly covered.",
+      "commercial_reuse": "REVIEW_FOR_REPAIR_AD",
+      "status": "OFFICIAL_ASSET_CONDITIONAL"
+    },
+    {
+      "id": "unicum-official",
+      "use_for": ["ktc-european-vending-repair", "ktc-snack-vending-repair"],
+      "source_type": "official_manufacturer_catalog",
+      "source_page": "https://www.unicum.ru/en/vending",
+      "models_confirmed": ["ROSSO", "NOVA", "FOODBOX", "ROSSO TOUCH", "NERO ToGo"],
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "OFFICIAL_MEDIA_REFERENCE"
+    },
+    {
+      "id": "rheavendors-official",
+      "use_for": ["ktc-european-vending-repair"],
+      "source_type": "official_manufacturer_catalog",
+      "source_page": "https://www.rheavendors.com/en/collection/",
+      "example_verified_model": "rhFS1.touch21,5",
+      "example_model_page": "https://www.rheavendors.com/en/collection/rhfs1-touch215/",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "OFFICIAL_MEDIA_REFERENCE"
+    },
+    {
+      "id": "bianchi-official",
+      "use_for": ["ktc-european-vending-repair"],
+      "source_type": "official_manufacturer_catalog",
+      "source_page": "https://www.bianchiindustry.com/en/",
+      "commercial_reuse": "not_explicitly_licensed_on_page",
+      "status": "OFFICIAL_MEDIA_REFERENCE"
+    }
+  ],
+  "reference_only": [
+    {
+      "model": "Jetinno JL22",
+      "asset_url": "https://equilibrium.com.ph/cdn/shop/files/JL222.jpg?v=1736995604",
+      "reason": "точная модель подтверждается визуально; права на коммерческое переиспользование не установлены",
+      "status": "DO_NOT_PUBLISH_UNTIL_RIGHTS_ACCEPTED"
+    },
+    {
+      "model": "Jetinno JL24",
+      "asset_url": "https://www.fajtradingllc.com/cdn/shop/files/jl24-machine-3.png?v=1752294589",
+      "reason": "точная модель подтверждается визуально; права на коммерческое переиспользование не установлены",
+      "status": "DO_NOT_PUBLISH_UNTIL_RIGHTS_ACCEPTED"
+    },
+    {
+      "model": "Vendista v2.5",
+      "asset_url": "https://static.insales-cdn.com/r/rEFbEZfhkoo/rs%3Afit%3A1000%3A0%3A1/q%3A85/plain/images/products/1/3648/838635072/4.jpg%40jpg",
+      "reason": "использовать только для визуальной сверки с официальной страницей Vendista",
+      "status": "REFERENCE_ONLY"
+    }
+  ]
+}
