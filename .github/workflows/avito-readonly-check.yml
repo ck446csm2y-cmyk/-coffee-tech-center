@@ -1,0 +1,27 @@
+name: Avito API read-only check
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .github/workflows/avito-readonly-check.yml
+      - scripts/avito_readonly_probe.py
+
+permissions:
+  contents: read
+
+jobs:
+  verify-authentication:
+    name: Verify Avito authentication
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      AVITO_CLIENT_ID: ${{ secrets.AVITO_CLIENT_ID }}
+      AVITO_CLIENT_SECRET: ${{ secrets.AVITO_CLIENT_SECRET }}
+      AVITO_USER_ID: ${{ secrets.AVITO_USER_ID }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify credentials without printing them
+        run: python3 scripts/avito_readonly_probe.py
