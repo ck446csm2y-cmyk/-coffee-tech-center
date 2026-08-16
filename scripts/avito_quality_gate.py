@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Static quality gate for Avito production manifest.
 
-Audit mode checks structural/business invariants and may pass while assets are still blocked.
-Release mode additionally requires every ad selected for release to have verified copy/images and ready_to_publish=true.
+Audit mode checks structural/business invariants and verifies that every ad has
+real-photo source candidates. Release mode additionally requires verified copy,
+verified final images and ready_to_publish=true.
 """
 from __future__ import annotations
 
@@ -12,6 +13,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "avito" / "production_manifest.json"
+IMAGE_SOURCES = ROOT / "avito" / "image_sources.json"
 
 FORBIDDEN_CLAIMS = (
     "24/7",
@@ -25,6 +27,11 @@ FORBIDDEN_CLAIMS = (
 EXPECTED_PRICE_KEYS = {
     "HOME_REPAIR": "home_repair_from",
     "B2B_SERVICE": "professional_repair_from",
+}
+
+NON_RELEASE_SOURCE_STATUSES = {
+    "REFERENCE_ONLY",
+    "DO_NOT_PUBLISH_UNTIL_RIGHTS_ACCEPTED",
 }
 
 
@@ -41,7 +48,14 @@ def main() -> int:
     args = parser.parse_args()
 
     data = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    image_data = json.loads(IMAGE_SOURCES.read_text(encoding="utf-8"))
     prices = data["price_rules"]
+
+    source_by_ad: dict[str, list[dict]] = {}
+    for source in image_data.get("sources", []):
+        for aid in source.get("use_for", []):
+            source_by_ad.setdefault(aid, []).append(source)
+
     errors: list[str] = []
     seen_ids: set[str] = set()
     seen_intents: dict[str, str] = {}
@@ -105,6 +119,20 @@ def main() -> int:
         if image_policy.startswith("exact_model") and not ad.get("models"):
             errors.append(f"{aid}: exact-model image policy without models list")
 
+        candidates = source_by_ad.get(aid, [])
+        if not candidates:
+            errors.append(f"{aid}: no verified/public image-source candidates registered")
+
+        if image_policy.startswith("exact_model"):
+            official_models = {
+                str(source.get("model"))
+                for source in candidates
+                if str(source.get("source_type", "")).startswith("official_") and source.get("model")
+            }
+            for model in ad.get("models") or []:
+                if model not in official_models:
+                    errors.append(f"{aid}: no official model-verification source for {model}")
+
         if args.release:
             if ad.get("copy_verified") is not True:
                 errors.append(f"{aid}: copy_verified is not true")
@@ -114,6 +142,9 @@ def main() -> int:
                 errors.append(f"{aid}: ready_to_publish is not true")
             if str(ad.get("status", "")).startswith(("BLOCKED_", "DRAFT_")):
                 errors.append(f"{aid}: blocked/draft status cannot release")
+            releasable = [s for s in candidates if s.get("status") not in NON_RELEASE_SOURCE_STATUSES]
+            if not releasable:
+                errors.append(f"{aid}: no releasable image source candidate")
 
     if errors:
         return fail(errors)
