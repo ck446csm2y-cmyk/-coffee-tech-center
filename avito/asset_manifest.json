@@ -1,0 +1,190 @@
+{
+  "version": "1.0-real-assets-only",
+  "status": "IN_PROGRESS",
+  "principle": "Никакая кофемашина, торговый автомат, терминал, плата, узел или запчасть не генерируется AI. Для конкретной модели используется только подтвержденное изображение этой модели.",
+  "release_rules": {
+    "first_frame_requires_final_visual_qa_score": 88,
+    "model_specific_confidence_min_percent": 95,
+    "manufacturer_product_image_is_not_service_proof": true,
+    "third_party_image_with_unclear_reuse_rights_is_reference_only": true,
+    "open_license_image_must_keep_required_attribution": true,
+    "user_owned_service_photo_preferred_for_trust_evidence": true
+  },
+  "assets": [
+    {
+      "ad_id": "ktc-home-repair-orenburg-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальная домашняя автоматическая кофемашина в понятном сервисном контексте",
+      "first_frame_candidate": null,
+      "supporting_assets": [
+        {
+          "role": "gallery_illustration_only",
+          "source_type": "open_license",
+          "source_page": "https://commons.wikimedia.org/wiki/File:Espresso_machine_repair_shop.png",
+          "asset_url": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Espresso_machine_repair_shop.png",
+          "license": "CC BY-SA 4.0",
+          "author": "Stussll",
+          "model_specific": false,
+          "service_proof_for_kofe_teh_centr": false,
+          "note": "Можно использовать только как явно стороннюю/иллюстративную фотографию с атрибуцией; нельзя выдавать за мастерскую Кофе Тех Центра. Для первого кадра слишком слабая продуктовая фокусировка."
+        },
+        {
+          "role": "brand_range_reference",
+          "source_type": "open_license",
+          "source_page": "https://commons.wikimedia.org/wiki/File:De%27Longhi_espresso_machines.png",
+          "license": "CC BY 2.0",
+          "model_specific": false,
+          "service_proof_for_kofe_teh_centr": false,
+          "note": "Реальные De’Longhi, но не сервисный контекст; не использовать первым кадром без отдельного решения Visual QA."
+        }
+      ],
+      "blocker": "Нет финального кадра, одновременно показывающего узнаваемую домашнюю кофемашину и ремонтный контекст на уровне >=88/100."
+    },
+    {
+      "ad_id": "ktc-professional-repair-orenburg-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальная коммерческая/профессиональная кофемашина в B2B-сервисном контексте",
+      "first_frame_candidate": null,
+      "supporting_assets": [
+        {
+          "role": "gallery_product_context",
+          "source_type": "open_license",
+          "source_page": "https://commons.wikimedia.org/wiki/File:Espresso_machines.jpg",
+          "asset_url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Espresso_machines.jpg",
+          "license": "CC BY-SA 3.0",
+          "author": "Nicholas Gemini",
+          "model_specific": false,
+          "service_proof_for_kofe_teh_centr": false,
+          "note": "Подтверждает визуальный класс профессиональной машины, но фотография недостаточно сильная для первого кадра по свету/композиции."
+        }
+      ],
+      "blocker": "Нужен более сильный реальный B2B-сервисный кадр; бытовую кофемашину подменять нельзя."
+    },
+    {
+      "ad_id": "ktc-jetinno-jl22-jl24-v2",
+      "status": "SOURCE_PARTIALLY_VERIFIED",
+      "required_object": "только Jetinno JL22 и/или JL24, без подмены моделей",
+      "model_confidence": {
+        "JL22": 99,
+        "JL24_model_exists": 99,
+        "JL24_candidate_image": 95
+      },
+      "sources": [
+        {
+          "model": "Jetinno JL22",
+          "source_type": "official_manufacturer",
+          "source_page": "https://model.jetinno.com/?pid=649&salt=049092&tid=710",
+          "asset_url_candidate": "https://model.jetinno.com/static/upload/images/file/2024/05/27/1716771211344226.jpg",
+          "reuse_status": "official_product_media_terms_not_explicitly_verified",
+          "role": "exact_model_reference_or_candidate"
+        },
+        {
+          "model": "Jetinno JL24",
+          "source_type": "official_manufacturer_model_catalog",
+          "source_page": "https://shop.jetinno.com/?s=user%2Freginfo.html",
+          "reuse_status": "model_existence_verified; exact_official_first_frame_asset_still_needed",
+          "role": "model_verification"
+        },
+        {
+          "model": "Jetinno JL24",
+          "source_type": "third_party_retailer",
+          "asset_url_candidate": "https://www.fajtradingllc.com/cdn/shop/files/jl24-machine-3.png?v=1752294589",
+          "reuse_status": "REFERENCE_ONLY_RIGHTS_UNCLEAR",
+          "role": "visual_cross_check_only"
+        }
+      ],
+      "blocker": "До release нужен финальный первый кадр с точной JL22/JL24 и подтвержденным правом/источником использования; фото не должно выглядеть как продажа машины."
+    },
+    {
+      "ad_id": "ktc-vendista-25-v2",
+      "status": "SOURCE_VERIFIED_VISUAL_NOT_SCORED",
+      "required_object": "точный терминал Vendista v2.5",
+      "model_confidence_percent": 99,
+      "sources": [
+        {
+          "model": "Vendista v2.5",
+          "source_type": "official_manufacturer",
+          "source_page": "https://vendista.ru/solutions/vendista-v-2-5/",
+          "asset_url_candidate": "https://vendista.ru/wp-content/uploads/2023/09/zerkalo2-scaled-e1695222090702.jpg",
+          "reuse_status": "official_product_media_terms_not_explicitly_verified",
+          "role": "exact_model_candidate"
+        }
+      ],
+      "first_frame_requirement": "Терминал крупно и узнаваемо; предпочтительно реальная установка на кофейном/вендинговом оборудовании. Официальный продуктовый рендер сам по себе не доказывает сервис Кофе Тех Центра.",
+      "blocker": "Финальный кадр еще не собран и не оценен на мобильном масштабе."
+    },
+    {
+      "ad_id": "ktc-kitpos-master-lite-v2",
+      "status": "SOURCE_VERIFIED_VISUAL_NOT_SCORED",
+      "required_object": "точные KitPos Master и KitPos Lite; модели не смешивать",
+      "model_confidence_percent": 99,
+      "sources": [
+        {
+          "model": "KitPos Master",
+          "source_type": "official_manufacturer",
+          "source_page": "https://vending.kit-invest.ru/KitPosMaster",
+          "asset_url_candidate": "https://vending.kit-invest.ru/Content/images/Hardware/KitPosMaster/_KitPosMaster1.jpg",
+          "reuse_status": "official_product_media_terms_not_explicitly_verified",
+          "role": "exact_model_candidate"
+        },
+        {
+          "model": "KitPos Lite",
+          "source_type": "official_manufacturer",
+          "source_page": "https://vending.kit-invest.ru/KitPosLite",
+          "asset_url_candidate": "https://vending.kit-invest.ru/Content/images/Hardware/KitPosLite/_KitPosLite1.jpg",
+          "reuse_status": "official_product_media_terms_not_explicitly_verified",
+          "role": "exact_model_candidate"
+        },
+        {
+          "source_type": "official_manufacturer_marketing_materials",
+          "source_page": "https://vending.kit-invest.ru/downloads-center",
+          "reuse_status": "public marketing downloads available; exact reuse terms still to be checked",
+          "role": "additional official reference"
+        }
+      ],
+      "first_frame_requirement": "Если Master и Lite стоят рядом — каждый должен быть однозначно подписан и визуально не перепутан. Для отдельного теста предпочтительнее одна конкретная модель на кадр.",
+      "blocker": "Финальный кадр еще не собран и не оценен."
+    },
+    {
+      "ad_id": "ktc-mdb-acquiring-telemetry-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальный кофейный/вендинговый автомат вместе с реальным установленным платежным терминалом",
+      "first_frame_candidate": null,
+      "blocker": "Официальный рендер отдельного терминала не закрывает интент эквайринга для кофейной точки; нужен реальный контекст установки."
+    },
+    {
+      "ad_id": "ktc-vending-repair-orenburg-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальный узнаваемый кофейный вендинговый автомат в сервисном контексте",
+      "first_frame_candidate": null,
+      "blocker": "Старый визуал Кофе Тех Центра перегружен рекламным текстом и не соответствует новому Visual QA; не переиспользовать первым кадром."
+    },
+    {
+      "ad_id": "ktc-vending-maintenance-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальный узнаваемый кофейный автомат во время аккуратного ТО",
+      "first_frame_candidate": null,
+      "blocker": "Нет отдельного сильного визуального якоря ТО; нельзя дублировать первый кадр общего ремонта."
+    },
+    {
+      "ad_id": "ktc-european-vending-repair-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальная подтвержденная Necta/Unicum/Bianchi/Rheavendors",
+      "first_frame_candidate": null,
+      "blocker": "Test-only направление; не тратить стартовый бюджет до появления отдельного точного визуала и данных по core-объявлениям."
+    },
+    {
+      "ad_id": "ktc-snack-vending-repair-v2",
+      "status": "BLOCKED_FIRST_FRAME",
+      "required_object": "реальный узнаваемый снековый автомат в сервисном контексте",
+      "first_frame_candidate": null,
+      "blocker": "Test-only направление; не входит в первую волну и не получает стартовый рекламный бюджет."
+    }
+  ],
+  "explicitly_rejected_assets": [
+    "оба AI-сгенерированных коллажа объявлений из текущего диалога",
+    "старый перегруженный визуал ремонта вендингового оборудования как first frame",
+    "любая похожая модель Jetinno/Vendista/KitPos вместо точной",
+    "открытая фотография чужой мастерской как доказательство собственного сервиса"
+  ]
+}
