@@ -1,0 +1,143 @@
+{
+  "name": "AVITO DOMINATOR — VISUAL QA PROTOCOL",
+  "version": "1.0",
+  "principle": "Первый кадр не обязан быть красивым. Он обязан выигрывать открытие объявления и приближать обращение.",
+  "release_rule": "Ни один визуал не допускается к публикации, если провален PRODUCT, RECOGNITION, CTR, TRUST или SALES check. Финальный первый кадр для публикации должен набрать не менее 88/100.",
+  "five_checks": ["PRODUCT", "RECOGNITION", "CTR", "TRUST", "SALES"],
+  "scorecard": {
+    "object_recognition": 20,
+    "offer_match": 20,
+    "ctr_potential": 20,
+    "trust": 15,
+    "composition": 10,
+    "text_readability": 5,
+    "photo_quality": 5,
+    "portfolio_distinctiveness": 5,
+    "total": 100
+  },
+  "thresholds": {
+    "0_69": "DO_NOT_USE",
+    "70_79": "WEAK",
+    "80_87": "TESTABLE_BUT_NOT_RELEASE_STANDARD",
+    "88_92": "STRONG",
+    "93_96": "VERY_STRONG",
+    "97_100": "EXCEPTIONAL",
+    "publication_minimum": 88
+  },
+  "global_forbidden": [
+    "AI-generated coffee machines, vending machines, terminals, boards, assemblies or spare parts instead of real equipment",
+    "similar model instead of the model named in the ad",
+    "unverified random internet photo presented as the target model",
+    "collage of 8-15 brands",
+    "huge advertising text",
+    "dirty workbench or visual clutter",
+    "chaotically scattered tools",
+    "trash, boxes, rags or bottles in the background",
+    "deep disassembly as the main first-frame object",
+    "equipment occupying less than roughly 40-50 percent of meaningful frame area",
+    "small unreadable text",
+    "phone numbers, addresses or long offers on first frame",
+    "stock technician posing with screwdriver",
+    "low-resolution photo",
+    "aggressive HDR, heavy filters or unnatural colors",
+    "manufacturer logos dominating the equipment",
+    "repair visual that looks primarily like equipment-for-sale"
+  ],
+  "first_frame_text": {
+    "max_semantic_blocks": 2,
+    "max_composition_share_percent": 25,
+    "mobile_readable_without_zoom": true
+  },
+  "mobile_test": {
+    "read_time_seconds_max": 2,
+    "must_answer": ["what_is_it", "what_is_offered", "why_relevant"]
+  },
+  "portfolio_visual_anchors": {
+    "ktc-home-repair-orenburg-v2": "recognizable domestic automatic coffee machine under clean service diagnostics",
+    "ktc-professional-repair-orenburg-v2": "recognizable commercial/professional coffee machine in B2B service context",
+    "ktc-jetinno-jl22-jl24-v2": "verified Jetinno JL22 or JL24 with model-identifiable front/context",
+    "ktc-vendista-25-v2": "verified Vendista v2.5 terminal installed on or next to real vending equipment",
+    "ktc-kitpos-master-lite-v2": "verified KitPos Master/Lite; models visually separated and labeled correctly",
+    "ktc-mdb-acquiring-telemetry-v2": "real vending coffee machine plus real payment terminal, both contextually visible",
+    "ktc-vending-repair-orenburg-v2": "recognizable coffee vending machine in service context",
+    "ktc-vending-maintenance-v2": "recognizable coffee vending machine during clean planned maintenance",
+    "ktc-european-vending-repair-v2": "real verified Necta/Unicum/Bianchi/Rheavendors vending machine",
+    "ktc-snack-vending-repair-v2": "recognizable snack vending machine in service context"
+  },
+  "category_rules": {
+    "home_repair": {
+      "equipment_frame_share_percent": [50, 70],
+      "must_remain_recognizable": true,
+      "preferred_overlay_primary": ["РЕМОНТ КОФЕМАШИН", "от 1 200 ₽"],
+      "preferred_overlay_test": ["РЕМОНТ КОФЕМАШИН"],
+      "gallery_story": ["CTR first frame", "real service/workplace", "diagnostics process", "recognizable technical unit", "real serviced brands if owned/verified", "completed/reception state", "transparent price", "address/entrance"]
+    },
+    "jetinno": {
+      "model_confidence_min_percent": 95,
+      "must_remain_model_identifiable": true,
+      "no_model_substitution": true,
+      "gallery_story": ["specific machine", "machine with service access", "internal unit with machine context", "diagnostics", "specific repair", "payment zone if relevant", "real parts if actually used", "service/workshop", "conditions", "CTA/address"]
+    },
+    "vendista": {
+      "exact_model_required": "Vendista v2.5",
+      "terminal_must_be_primary_object": true,
+      "preferred_context": "installed on real equipment while terminal remains clearly identifiable"
+    },
+    "kitpos": {
+      "master_lite_must_not_be_visually_confused": true,
+      "screen_and_body_must_be_identifiable": true,
+      "no_fingers_covering_device": true,
+      "avoid_reflections": true
+    },
+    "acquiring": {
+      "forbidden_first_frame": ["bank card", "NFC icon", "phone", "handshake", "QR code", "abstract payment graphics", "unknown terminal"],
+      "must_show_vending_context": true
+    },
+    "professional": {
+      "must_use_commercial_equipment": true,
+      "must_not_use_domestic_machine_as_primary_object": true,
+      "visual_tone": ["technical", "professional", "clean", "B2B"]
+    }
+  },
+  "visual_red_team_questions": [
+    "without_text_is_offer_object_clear",
+    "exact_model_confirmed_if_model_specific",
+    "cannot_be_mistaken_for_equipment_sale",
+    "nothing_looks_dirty_or_cheap",
+    "equipment_not_over_disassembled",
+    "stands_out_among_20_competitors",
+    "text_readable_without_zoom",
+    "no_ai_or_stock_signs",
+    "competitor_cannot_obviously_outprove_with_simple_real_photo",
+    "reviewer_would_open_among_five_similar"
+  ],
+  "final_release_checks": [
+    "real_image",
+    "model_confirmed",
+    "equipment_recognizable",
+    "no_visual_clutter",
+    "first_frame_supports_ctr",
+    "first_frame_text_not_overloaded",
+    "price_not_duplicated_without_test_reason",
+    "gallery_tells_story",
+    "gallery_contains_real_service_evidence",
+    "no_repeated_frames",
+    "no_visual_cannibalization_between_ads",
+    "no_similar_but_wrong_equipment",
+    "image_does_not_promise_unprovided_service",
+    "final_gallery_frame_has_clear_next_step",
+    "first_frame_score_at_least_88"
+  ],
+  "visual_priority": [
+    "ktc-home-repair-orenburg-v2",
+    "ktc-jetinno-jl22-jl24-v2",
+    "ktc-vendista-25-v2",
+    "ktc-kitpos-master-lite-v2",
+    "ktc-professional-repair-orenburg-v2",
+    "ktc-mdb-acquiring-telemetry-v2",
+    "ktc-vending-repair-orenburg-v2",
+    "ktc-vending-maintenance-v2",
+    "ktc-european-vending-repair-v2",
+    "ktc-snack-vending-repair-v2"
+  ]
+}
