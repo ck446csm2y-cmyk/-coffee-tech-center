@@ -50,6 +50,15 @@ $model = clean($body['model'] ?? '', 100);
 $problem = clean($body['problem'] ?? '', 1000);
 $contact = clean($body['contact'] ?? '', 50);
 $consent = clean($body['consent'] ?? '', 10);
+$source = clean($body['source'] ?? '', 50);
+$utmSource = clean($body['utm_source'] ?? '', 120);
+$utmMedium = clean($body['utm_medium'] ?? '', 120);
+$utmCampaign = clean($body['utm_campaign'] ?? '', 120);
+$utmContent = clean($body['utm_content'] ?? '', 120);
+$utmTerm = clean($body['utm_term'] ?? '', 120);
+$avitoAdId = clean($body['avito_ad_id'] ?? '', 80);
+$landingPage = clean($body['landing_page'] ?? '', 500);
+$referrer = clean($body['referrer'] ?? '', 300);
 $phoneDigits = preg_replace('/\D+/', '', $phone) ?? '';
 
 if ($name === '' || strlen($phoneDigits) < 6 || $equipment === '' || $problem === '' || $consent !== 'yes') {
@@ -122,6 +131,17 @@ $lead = [
     'model' => $model,
     'problem' => $problem,
     'contact' => $contact,
+    'attribution' => array_filter([
+        'source' => $source,
+        'utm_source' => $utmSource,
+        'utm_medium' => $utmMedium,
+        'utm_campaign' => $utmCampaign,
+        'utm_content' => $utmContent,
+        'utm_term' => $utmTerm,
+        'avito_ad_id' => $avitoAdId,
+        'landing_page' => $landingPage,
+        'referrer' => $referrer,
+    ], static fn (string $value): bool => $value !== ''),
     'consent' => true,
     'view_token_hash' => hash('sha256', $viewToken),
 ];
@@ -157,7 +177,8 @@ $isConfigured = $botToken !== '' && $botToken !== 'ВСТАВЬТЕ_ТОКЕН_�
 if ($isConfigured && function_exists('curl_init')) {
     // В Telegram передаём только уведомление и защищённую ссылку. Имя и телефон остаются на сервере в РФ.
     $viewUrl = $siteUrl . '/admin/lead.php?id=' . rawurlencode($id) . '&key=' . rawurlencode($viewToken);
-    $message = "☕ Новая заявка — Кофе Тех Центр\n\nНомер: {$id}\nОткрыть заявку: {$viewUrl}";
+    $sourceLabel = $source !== '' ? $source : ($utmSource !== '' ? $utmSource : 'не определён');
+    $message = "☕ Новая заявка — Кофе Тех Центр\n\nНомер: {$id}\nИсточник: {$sourceLabel}\nОткрыть заявку: {$viewUrl}";
     $curl = curl_init('https://api.telegram.org/bot' . $botToken . '/sendMessage');
     if ($curl !== false) {
         curl_setopt_array($curl, [
