@@ -1,4 +1,4 @@
-name: Avito controlled publish
+name: Avito API read-only check
 
 on:
   workflow_dispatch:
@@ -7,13 +7,18 @@ on:
       - main
     paths:
       - .github/workflows/avito-readonly-check.yml
+      - scripts/avito_readonly_probe.py
+  pull_request:
+    paths:
+      - .github/workflows/avito-readonly-check.yml
+      - scripts/avito_readonly_probe.py
 
 permissions:
   contents: read
 
 jobs:
-  publish-avito-feed:
-    name: Publish controlled Avito feed
+  verify-authentication:
+    name: Verify Avito authentication
     runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
@@ -24,5 +29,5 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Point Autoload to controlled feed and launch upload
-        run: python3 scripts/avito_publish.py
+      - name: Verify credentials without printing them
+        run: python3 scripts/avito_readonly_probe.py
