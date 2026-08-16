@@ -8,15 +8,23 @@ on:
     paths:
       - avito/production_manifest_v3.json
       - avito/visual_qa_protocol.json
+      - avito/asset_manifest.json
+      - avito/launch_control.json
       - avito/agents_policy.json
       - scripts/avito_quality_gate.py
+      - scripts/avito_asset_gate.py
+      - scripts/avito_publish.py
       - .github/workflows/avito-quality-gate.yml
   pull_request:
     paths:
       - avito/production_manifest_v3.json
       - avito/visual_qa_protocol.json
+      - avito/asset_manifest.json
+      - avito/launch_control.json
       - avito/agents_policy.json
       - scripts/avito_quality_gate.py
+      - scripts/avito_asset_gate.py
+      - scripts/avito_publish.py
       - .github/workflows/avito-quality-gate.yml
 
 permissions:
@@ -32,3 +40,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Run structural, business-rule and visual-protocol audit
         run: python3 scripts/avito_quality_gate.py
+      - name: Run real-asset and spend-safety audit
+        run: python3 scripts/avito_asset_gate.py
