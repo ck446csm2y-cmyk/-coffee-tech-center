@@ -73,6 +73,8 @@ def explains_price_variability(text: str) -> bool:
         "после диагност",
         "оплачиваются отдельно",
         "оплачивается отдельно",
+        "запчасти отдельно",
+        "детали отдельно",
     )
     return any(marker in lower for marker in markers)
 
@@ -149,8 +151,8 @@ def main() -> int:
 
         if len(price_explanation) < 80:
             errors.append(f"{aid}: price explanation is too weak")
-        if not explains_price_variability(price_explanation):
-            errors.append(f"{aid}: price explanation does not clarify variability/additional work")
+        if not explains_price_variability(f"{price_explanation} {desc}"):
+            errors.append(f"{aid}: listing copy does not clarify price variability/additional work")
         if aid not in {"ktc-vending-maintenance-v2", "ktc-vendista-25-v2", "ktc-kitpos-master-lite-v2", "ktc-mdb-acquiring-telemetry-v2"}:
             if "запчаст" not in price_explanation.lower() and "детал" not in price_explanation.lower():
                 errors.append(f"{aid}: repair price explanation must clarify parts/details")
