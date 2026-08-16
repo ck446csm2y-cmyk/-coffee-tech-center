@@ -1,0 +1,66 @@
+{
+  "mode": "SAFE_LAUNCH",
+  "status": "ARMED_BUT_BLOCKED_UNTIL_ALL_GATES_PASS",
+  "money_protection": {
+    "autoload_purchase_does_not_authorize_paid_promotion": true,
+    "paid_promotion_requires_explicit_owner_confirmation": true,
+    "automatic_budget_increase": false,
+    "automatic_category_expansion": false,
+    "automatic_price_reduction": false,
+    "publish_all_ads_at_once": false
+  },
+  "initial_release": {
+    "strategy": "controlled_wave",
+    "wave_1_max_ads": 2,
+    "preferred_order": [
+      "ktc-home-repair-orenburg-v2",
+      "ktc-professional-repair-orenburg-v2"
+    ],
+    "brand_ads_after_wave_1": [
+      "ktc-jetinno-jl22-jl24-v2",
+      "ktc-vendista-25-v2",
+      "ktc-kitpos-master-lite-v2",
+      "ktc-mdb-acquiring-telemetry-v2"
+    ],
+    "secondary_not_in_first_launch": [
+      "ktc-vending-repair-orenburg-v2",
+      "ktc-vending-maintenance-v2",
+      "ktc-european-vending-repair-v2",
+      "ktc-snack-vending-repair-v2"
+    ]
+  },
+  "mandatory_before_upload": [
+    "autoload_access_confirmed_by successful profile/upload-capability check",
+    "copy quality gate PASS",
+    "exact Avito category/schema validated",
+    "real image source recorded",
+    "specific model verified where applicable",
+    "visual QA score >= 88 for first frame",
+    "PRODUCT PASS",
+    "RECOGNITION PASS",
+    "CTR PASS",
+    "TRUST PASS",
+    "SALES PASS",
+    "mobile 1-2 second read test PASS",
+    "10-question visual red team PASS",
+    "gallery contains no fake service evidence",
+    "no image/model substitution",
+    "ready_to_publish=true"
+  ],
+  "mandatory_after_upload": [
+    "read Avito upload report/status",
+    "confirm each item accepted or capture exact rejection reason",
+    "do not state published until Avito status confirms it",
+    "do not enable paid promotion automatically"
+  ],
+  "stop_conditions": [
+    "Avito Autoload profile remains 403/unavailable",
+    "visual score < 88",
+    "model confidence below required threshold",
+    "category/schema uncertainty",
+    "unverified commercial claim",
+    "image licensing/source uncertainty judged material",
+    "unexpected paid action",
+    "publication report error"
+  ]
+}
