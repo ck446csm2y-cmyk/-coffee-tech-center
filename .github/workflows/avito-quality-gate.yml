@@ -1,0 +1,32 @@
+name: Avito quality gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - avito/production_manifest.json
+      - avito/agents_policy.json
+      - scripts/avito_quality_gate.py
+      - .github/workflows/avito-quality-gate.yml
+  pull_request:
+    paths:
+      - avito/production_manifest.json
+      - avito/agents_policy.json
+      - scripts/avito_quality_gate.py
+      - .github/workflows/avito-quality-gate.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Self-audit manifest
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Run structural and business-rule audit
+        run: python3 scripts/avito_quality_gate.py
