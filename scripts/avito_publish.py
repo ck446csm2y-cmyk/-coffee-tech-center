@@ -2,9 +2,11 @@
 """Publish the controlled Coffee Tech Center feed through Avito Autoload.
 
 Safety:
-- release quality gate MUST pass before any Avito token/API request;
+- copy/business/visual release quality gate MUST pass before any Avito token/API request;
+- real-asset/source/spend-safety gate MUST also pass;
 - upload is launched only after the profile is successfully pointed at our known GitHub feed;
-- secrets are never printed.
+- secrets are never printed;
+- this publisher does not enable paid promotion.
 """
 import json
 import os
@@ -20,6 +22,7 @@ API_BASE = "https://api.avito.ru"
 FEED_URL = "https://raw.githubusercontent.com/ck446csm2y-cmyk/-coffee-tech-center/main/avito/feed.xml"
 ROOT = Path(__file__).resolve().parents[1]
 QUALITY_GATE = ROOT / "scripts" / "avito_quality_gate.py"
+ASSET_GATE = ROOT / "scripts" / "avito_asset_gate.py"
 
 
 def http_json(method, url, token, payload=None):
@@ -27,7 +30,7 @@ def http_json(method, url, token, payload=None):
     headers = {
         "Accept": "application/json",
         "Authorization": f"Bearer {token}",
-        "User-Agent": "coffee-tech-center-avito-publisher/1.1",
+        "User-Agent": "coffee-tech-center-avito-publisher/1.2",
     }
     if data is not None:
         headers["Content-Type"] = "application/json"
@@ -59,9 +62,9 @@ def safe_error(body):
     return json.dumps(allowed or body, ensure_ascii=False)[:1500]
 
 
-def run_release_gate() -> bool:
+def run_gate(script: Path, label: str) -> bool:
     result = subprocess.run(
-        [sys.executable, str(QUALITY_GATE), "--release"],
+        [sys.executable, str(script), "--release"],
         cwd=str(ROOT),
         text=True,
         capture_output=True,
@@ -69,16 +72,27 @@ def run_release_gate() -> bool:
     )
     if result.stdout:
         print(result.stdout.rstrip())
+    if result.stderr:
+        print(result.stderr.rstrip())
     if result.returncode != 0:
-        print("::error::Release quality gate failed; no Avito API request was made")
+        print(f"::error::{label} failed; no Avito API request was made")
         return False
-    print("RELEASE_QUALITY_GATE=PASS")
+    print(f"{label.upper().replace(' ', '_')}=PASS")
+    return True
+
+
+def run_release_gates() -> bool:
+    # Order matters: cheap static checks first. Avito is not contacted by either gate.
+    if not run_gate(QUALITY_GATE, "release quality gate"):
+        return False
+    if not run_gate(ASSET_GATE, "real asset gate"):
+        return False
     return True
 
 
 def main():
-    # Absolute first gate: do not even request an Avito token for a blocked package.
-    if not run_release_gate():
+    # Absolute first gates: do not even request an Avito token for a blocked package.
+    if not run_release_gates():
         return 20
 
     cid = os.environ.get("AVITO_CLIENT_ID", "").strip()
@@ -153,6 +167,7 @@ def main():
         return 11
 
     print("AUTOLOAD_UPLOAD_LAUNCHED=true")
+    print("PAID_PROMOTION_LAUNCHED=false")
     return 0
 
 
