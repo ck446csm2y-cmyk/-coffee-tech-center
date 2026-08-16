@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 """Publish the controlled Coffee Tech Center feed through Avito Autoload.
 
-Safety: upload is launched only after the profile is successfully pointed at our known GitHub feed.
-Secrets are never printed.
+Safety:
+- release quality gate MUST pass before any Avito token/API request;
+- upload is launched only after the profile is successfully pointed at our known GitHub feed;
+- secrets are never printed.
 """
 import json
 import os
+import subprocess
 import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from pathlib import Path
 
 TOKEN_URL = "https://api.avito.ru/token/"
 API_BASE = "https://api.avito.ru"
 FEED_URL = "https://raw.githubusercontent.com/ck446csm2y-cmyk/-coffee-tech-center/main/avito/feed.xml"
+ROOT = Path(__file__).resolve().parents[1]
+QUALITY_GATE = ROOT / "scripts" / "avito_quality_gate.py"
 
 
 def http_json(method, url, token, payload=None):
@@ -21,7 +27,7 @@ def http_json(method, url, token, payload=None):
     headers = {
         "Accept": "application/json",
         "Authorization": f"Bearer {token}",
-        "User-Agent": "coffee-tech-center-avito-publisher/1.0",
+        "User-Agent": "coffee-tech-center-avito-publisher/1.1",
     }
     if data is not None:
         headers["Content-Type"] = "application/json"
@@ -53,7 +59,28 @@ def safe_error(body):
     return json.dumps(allowed or body, ensure_ascii=False)[:1500]
 
 
+def run_release_gate() -> bool:
+    result = subprocess.run(
+        [sys.executable, str(QUALITY_GATE), "--release"],
+        cwd=str(ROOT),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if result.stdout:
+        print(result.stdout.rstrip())
+    if result.returncode != 0:
+        print("::error::Release quality gate failed; no Avito API request was made")
+        return False
+    print("RELEASE_QUALITY_GATE=PASS")
+    return True
+
+
 def main():
+    # Absolute first gate: do not even request an Avito token for a blocked package.
+    if not run_release_gate():
+        return 20
+
     cid = os.environ.get("AVITO_CLIENT_ID", "").strip()
     sec = os.environ.get("AVITO_CLIENT_SECRET", "").strip()
     if not cid or not sec:
@@ -101,7 +128,6 @@ def main():
     print(f"AUTOLOAD_PROFILE_V2_POST_HTTP={status}")
     if status != 200:
         print("AUTOLOAD_PROFILE_V2_ERROR=" + safe_error(body))
-        # Controlled fallback to deprecated v1 profile. Same known feed only.
         profile_v1 = {
             "autoload_enabled": True,
             "report_email": report_email,
@@ -119,7 +145,6 @@ def main():
             return 10
 
     print("AUTOLOAD_PROFILE_CONTROLLED=true")
-    # Launch only after the profile points to the controlled feed above.
     upload_status, upload_body = http_json("POST", API_BASE + "/autoload/v1/upload", token, {})
     print(f"AUTOLOAD_UPLOAD_HTTP={upload_status}")
     if upload_status not in (200, 201, 202, 204):
@@ -128,7 +153,6 @@ def main():
         return 11
 
     print("AUTOLOAD_UPLOAD_LAUNCHED=true")
-    print("FEED_ID=ktc-coffee-repair-orenburg-001")
     return 0
 
 
