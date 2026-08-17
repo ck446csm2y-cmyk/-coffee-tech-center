@@ -76,6 +76,13 @@ $model = escape(($lead['model'] ?? '') !== '' ? $lead['model'] : 'Не указ�
 $problem = nl2br(escape($lead['problem'] ?? '—'));
 $contact = escape(($lead['contact'] ?? '') !== '' ? $lead['contact'] : 'Не указано');
 $createdAt = escape($lead['created_at'] ?? '—');
+$attribution = is_array($lead['attribution'] ?? null) ? $lead['attribution'] : [];
+$source = escape(($attribution['source'] ?? '') !== '' ? $attribution['source'] : 'Не определён');
+$utmCampaign = escape(($attribution['utm_campaign'] ?? '') !== '' ? $attribution['utm_campaign'] : '—');
+$utmContent = escape(($attribution['utm_content'] ?? '') !== '' ? $attribution['utm_content'] : '—');
+$avitoAdId = escape(($attribution['avito_ad_id'] ?? '') !== '' ? $attribution['avito_ad_id'] : '—');
+$landingPage = escape(($attribution['landing_page'] ?? '') !== '' ? $attribution['landing_page'] : '—');
+$referrer = escape(($attribution['referrer'] ?? '') !== '' ? $attribution['referrer'] : '—');
 $safeId = escape($id);
 $safeKey = escape($key);
 
@@ -103,6 +110,12 @@ $safeKey = escape($key);
         <div><dt>Марка и модель</dt><dd><?= $model ?></dd></div>
         <div><dt>Как ответить</dt><dd><?= $contact ?></dd></div>
         <div><dt>Описание</dt><dd><?= $problem ?></dd></div>
+        <div><dt>Источник</dt><dd><?= $source ?></dd></div>
+        <div><dt>Кампания</dt><dd><?= $utmCampaign ?></dd></div>
+        <div><dt>Объявление / вариант</dt><dd><?= $utmContent ?></dd></div>
+        <div><dt>ID объявления Авито</dt><dd><?= $avitoAdId ?></dd></div>
+        <div><dt>Страница входа</dt><dd><?= $landingPage ?></dd></div>
+        <div><dt>Переход с сайта</dt><dd><?= $referrer ?></dd></div>
       </dl>
       <div class="lead-actions">
         <a class="button button-primary" href="tel:<?= $phoneLink ?>">Позвонить клиенту</a>
